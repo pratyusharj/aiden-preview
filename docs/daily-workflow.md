@@ -6,6 +6,8 @@ Aiden keeps everyone clear on what done means, where it stands, when it will lan
 
 Scope holds what you’re building and how you’ll know it works. Refine it as you learn; Aiden checks the work again. Keep delivery steps usable and testable, including a concrete test plan for foundation work that other steps depend on.
 
+When your spec numbers its requirements or says how each is verified, as a requirements verification matrix does, each requirement keeps its source ID (such as FSW-103) and its verification method and success criteria. A requirement verified by test counts as done only when the code check finds a test that covers every criterion. The check reads the test code; it cannot see whether the test ran or passed, so it lists that as unknown.
+
 ## Where does it stand?
 
 Overview shows progress, remaining effort, agreed timing, the delivery plan, and what needs your attention. Expand a delivery step for checks, linked tickets, and next actions. Scope holds the agreed requirements and plan; Change opens a requirement in chat. Activity shows what changed and why, with the details of each check under All runs.

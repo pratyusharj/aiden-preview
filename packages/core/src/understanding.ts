@@ -14,6 +14,8 @@ import {
   type Product,
   ProductSchema,
   requirementId,
+  RequirementVerificationSchema,
+  sourceRequirementId,
 } from '../../contracts/src/index.js';
 import { allowedRequirementIds } from './baseline.js';
 
@@ -35,6 +37,13 @@ export const UnderstandingSchema = z
             edgeCases: z
               .array(z.object({ id: edgeCaseId, text: z.string().trim().min(1).max(300) }).strict())
               .max(6),
+            /**
+             * The source's own ID for this requirement, such as "FSW-103"; null when it has none.
+             * Optional so checkpoints saved before source IDs existed still parse.
+             */
+            sourceId: sourceRequirementId.nullable().optional(),
+            /** The source's stated verification method and success criteria; null when unstated. */
+            verification: RequirementVerificationSchema.nullable().optional(),
           })
           .strict(),
       )
@@ -102,6 +111,8 @@ export function productFromUnderstanding(
       ...(r.edgeCases.length
         ? { edgeCases: r.edgeCases.map((e) => ({ ...e, origin: 'scope' as const })) }
         : {}),
+      ...(r.sourceId ? { sourceId: r.sourceId } : {}),
+      ...(r.verification ? { verification: r.verification } : {}),
     })),
   });
   return { product, calls: understanding.calls, settledCalls: understanding.settledCalls ?? [] };

@@ -38,7 +38,7 @@ export function DoneMeans({
             <li key={r.id}>
               <div className="project-requirement-heading">
                 <span>
-                  <strong>{r.id}</strong> {r.text}
+                  <strong>{r.id}</strong> {r.sourceId && <code>{r.sourceId}</code>} {r.text}
                 </span>
                 <button
                   className="text-button"
@@ -49,6 +49,11 @@ export function DoneMeans({
                   Change
                 </button>
               </div>
+              {r.verification && (
+                <p className="row-sub">
+                  Verified by {r.verification.method}: {r.verification.criteria}
+                </p>
+              )}
               {r.edgeCases && r.edgeCases.length > 0 && (
                 <details className="scope-edge-cases">
                   <summary>{plural(r.edgeCases.length, 'edge case')}</summary>

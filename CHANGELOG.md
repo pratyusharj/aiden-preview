@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Requirements keep the traceability a spec gives them. When a goal or linked Notion page numbers its requirements and says how each is verified, such as a verification matrix with "FSW-103" and a Test method with success criteria, each requirement keeps that source ID and its verification method (test, analysis, inspection, or demonstration) and criteria. Scope shows them, delivery tickets list them, and a requirement verified by test counts as done only when the code check finds a test covering every criterion: a test that stops early or omits a criterion leaves it partial, and one run against an excluded configuration, such as a mock where the criteria name flight hardware, is a deviation. Requirements without a stated verification are checked as before.
+
 - Teams: a Mac no longer stays "Busy with local work" after its checks finish. The worker now reports busy from the work it is actually running, so a log line written to a finished check (such as the browser check asking where the app runs) cannot keep the machine from picking up team builds, and updates and automatic checks are no longer held back by it.
 - Restart to update works right after a check finishes. It was refused for up to five seconds after a check ended, with "Finish or cancel the active assessment before restarting to update", because the app still counted the finished check as running.
 - Answering a Guide question while a check is running no longer drops the answer. Aiden saves it right away, says it will update the requirements when the current work finishes, and then does so without asking again.
