@@ -104,7 +104,7 @@ export function DeliveryPlan({
       <RequirementRow
         key={id}
         id={id}
-        text={v.item.text}
+        text={v.item.sourceId ? `${v.item.sourceId}: ${v.item.text}` : v.item.text}
         state={v.state}
         main={v.facts?.main}
         onWatch={onWatch}

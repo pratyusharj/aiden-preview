@@ -28,12 +28,36 @@ export const EdgeCaseSchema = z
     origin: z.enum(['scope', 'found']),
   })
   .strict();
-/** Edge cases are optional so baselines saved before they existed still parse. */
+/**
+ * The identifier a source document gives a requirement, such as `FSW-103` in a verification
+ * matrix or `3.2.1` in a specification. Aiden's own `REQ-n` ID stays the stable identity.
+ */
+export const sourceRequirementId = z
+  .string()
+  .trim()
+  .regex(/^[A-Za-z0-9][A-Za-z0-9._:/-]{0,39}$/);
+/**
+ * How a source says a requirement is proven, as in a requirements verification matrix: test,
+ * analysis, inspection, or demonstration, with the success criteria that count as proof.
+ * Example: { method: "test", criteria: "Timer error under 1 s at T+1 h, T+12 h and T+24 h" }.
+ */
+export const RequirementVerificationSchema = z
+  .object({
+    method: z.enum(['test', 'analysis', 'inspection', 'demonstration']),
+    criteria: z.string().trim().min(1).max(600),
+  })
+  .strict();
+/**
+ * Edge cases, source IDs, and verification are optional so baselines saved before they existed
+ * still parse. Source ID and verification appear only when the source states them.
+ */
 export const RequirementSchema = z
   .object({
     id: requirementId,
     text: z.string().trim().min(1),
     edgeCases: z.array(EdgeCaseSchema).max(8).optional(),
+    sourceId: sourceRequirementId.optional(),
+    verification: RequirementVerificationSchema.optional(),
   })
   .strict();
 /**
@@ -213,6 +237,8 @@ export type Product = z.infer<typeof ProductSchema>;
 export type Requirement = z.infer<typeof RequirementSchema>;
 /** A situation around a requirement that tends to break first. */
 export type EdgeCase = z.infer<typeof EdgeCaseSchema>;
+/** How a source says a requirement is proven, with its success criteria. */
+export type RequirementVerification = z.infer<typeof RequirementVerificationSchema>;
 /** Explicit provider, authentication source, and optional model selection; adapters must not change billing mode. */
 export type RuntimeConfig = z.infer<typeof RuntimeSchema>;
 /** Immutable selected commit and its analysis role; evidence must match this repository and SHA. */

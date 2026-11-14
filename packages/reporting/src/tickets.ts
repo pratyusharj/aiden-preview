@@ -55,8 +55,12 @@ export function deliveryTickets(
     );
     for (const id of feature.requirementIds) {
       const requirement = product.requirements.find((r) => r.id === id)!;
+      const verification = requirement.verification;
       lines.push(
-        `- ${id}: ${requirement.text}`,
+        `- ${id}${requirement.sourceId ? ` (${requirement.sourceId})` : ''}: ${requirement.text}`,
+        ...(verification
+          ? [`- ${id} verified by ${verification.method}: ${verification.criteria}`]
+          : []),
         ...(requirement.edgeCases ?? []).map((e) => `- ${id} ${e.id}: ${e.text}`),
       );
     }
